@@ -15,9 +15,11 @@ let hypertopic = new Hypertopic(conf.services);
 let itemView = getConfig('itemView', {
   mode: 'picture',
   name: 'name',
+  lyrics: 'lyrics',
   image: 'resource',
+  rights: 'rights',
   linkTo: 'resource',
-  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable']
+  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'rights', 'suppléments']
 });
 
 function getString(obj) {
@@ -34,7 +36,8 @@ class Item extends Component {
       isCreatable: false,
       topic: []
     };
-    // These bindings are necessary to make `this` work in the callback
+    // These bindings are necessary to
+    //!!make `this` work in the callback
     this._assignTopic = this._assignTopic.bind(this);
     this._removeTopic = this._removeTopic.bind(this);
     this._fetchItem = this._fetchItem.bind(this);
@@ -44,6 +47,9 @@ class Item extends Component {
 
   render() {
     let name = getString(this.state[itemView.name]);
+    let lyrics = getString(this.state[itemView.lyrics]);
+    let extract = getString(this.state[itemView.extract]);
+    //!!
     let attributes = this._getAttributes();
     let viewpoints = this._getViewpoints();
     let attributeButtonLabel = this.state.isCreatable? 'Valider' : 'Ajouter un attribut';
@@ -76,6 +82,9 @@ class Item extends Component {
             <div className="col-md-8 p-4">
               <div className="Subject">
                 <h2 className="h4 font-weight-bold text-center">{name}</h2>
+                <div className="Lyrics">
+                 {lyrics}
+                 </div>
                 <ShowItem item={this.state} />
               </div>
             </div>
@@ -250,10 +259,11 @@ function Picture(item) {
   let link = getString(item[itemView.linkTo]);
   return (
     <div className="p-3">
-      <a target="_blank" href={link} className="cursor-zoom">
-        <img src={img} alt={name}/>
+      <a target="_blank" href={link} className="cursor">
+        Partition <img src={img} alt={name}/>
       </a>
     </div>
+
   );
 }
 
