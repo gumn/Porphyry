@@ -22,9 +22,7 @@ class Corpora extends Component {
             {this.props.ids.join(' + ')}
             <span className="badge badge-pill badge-light ml-4">{count} / {total}</span>
           </h2>
-          <div className="Items m-3">
             {items}
-          </div>
         </div>
       </div>
     );
@@ -32,8 +30,8 @@ class Corpora extends Component {
 
   _getItems() {
     return this.props.items.map(item =>
-        <Item key={item.id} item={item}
-          id={item.corpus+'/'+item.id} />
+        <Item key={item.name} item={item}
+          id={item.corpus+'/'+item.name} />
     );
   }
 
@@ -78,10 +76,10 @@ function Picture(item) {
   let name = getString(item[listView.name]);
   return (
     <div className="Item">
+    <img src={img} alt={name}/>
       <Link to={uri}>
-        <img src={img} alt={name}/>
+        <font color="#000000">{name}</font>
       </Link>
-      <div className="text-center">{name}</div>
     </div>
   );
 }
