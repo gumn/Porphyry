@@ -16,9 +16,10 @@ let itemView = getConfig('itemView', {
   mode: 'picture',
   name: 'name',
   lyrics: 'lyrics',
+  music: 'extract',
   rights: 'rights',
   linkTo: 'resource',
-  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'rights', 'suppléments']
+  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'extract', 'rights', 'suppléments']
 });
 
 function getString(obj) {
@@ -256,12 +257,18 @@ function Picture(item) {
   let img = getString(item[itemView.image]);
   let name = getString(item[itemView.name]);
   let link = getString(item[itemView.linkTo]);
+  let music = getString(item[itemView.music]);
   return (
     <div className="p-3">
       <img src="http://www.icone-png.com/png/33/32891.png"/>
       <a target="_blank" href={link} className="cursor-Pointer">
         Partition de {name}
       </a>
+      <p>
+      <img src="http://www.icone-png.com/png/6/6095.png"/>
+      <a target="_blank" href={music} className="cursor-Pointer">
+        Ecouter {name}
+      </a></p>
     </div>
 
   );
