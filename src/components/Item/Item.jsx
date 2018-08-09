@@ -16,7 +16,6 @@ let itemView = getConfig('itemView', {
   mode: 'picture',
   name: 'name',
   lyrics: 'lyrics',
-  image: 'resource',
   rights: 'rights',
   linkTo: 'resource',
   hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'rights', 'suppléments']
@@ -259,8 +258,9 @@ function Picture(item) {
   let link = getString(item[itemView.linkTo]);
   return (
     <div className="p-3">
-      <a target="_blank" href={link} className="cursor">
-        Partition <img src={img} alt={name}/>
+      <img src="http://www.icone-png.com/png/33/32891.png"/>
+      <a target="_blank" href={link} className="cursor-Pointer">
+        Partition de {name}
       </a>
     </div>
 
