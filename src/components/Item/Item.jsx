@@ -92,11 +92,9 @@ class Item extends Component {
             <div className="col-md-8 p-4">
               <div className="Subject">
                 <h2 className="h4 font-weight-bold text-center">{name}</h2>
-                 <div className="text-center">
-                <div className="col-md-6 p-4 text-center">
+                <div className="text-center col-md-6 p-4 m-5">
                  {lyrics_song}
                  </div>
-                </div>
                 <ShowItem item={this.state} />
               </div>
             </div>

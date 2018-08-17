@@ -22,7 +22,7 @@ class Corpora extends Component {
             {this.props.ids.join(' + ')}
             <span className="badge badge-pill badge-light ml-4">{count} / {total}</span>
           </h2>
-          <div className="Items p-3">
+          <div className="Items m-2">
             {items}
           </div>
         </div>
