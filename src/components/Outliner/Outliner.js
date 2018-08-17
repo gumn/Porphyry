@@ -45,7 +45,7 @@ class Outliner extends React.Component {
         </div>
         <div className="container-fluid">
           <div className="App-content row">
-            <div className="col-md-4 p-4">
+            <div className="col-md-8 p-4">
               <div className="Description">
                 <h2 className="h4 font-weight-bold text-center">{status}</h2>
                 <div className="h6 font-weight-bold text-center mb-0 mt-4">{helper}</div>
