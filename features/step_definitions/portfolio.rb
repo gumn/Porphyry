@@ -27,6 +27,16 @@ Soit("le point de vue {string} rattaché au portfolio {string}") do |viewpoint, 
   # On the remote servers
 end
 
+Soit("le regroupement de thèmes {string} rattaché au point de vue {string}") do |topic, viewpoint|
+end
+
+Soit("le thème {string} rattaché au regroupement de thèmes {string}") do |topic1, topic2|
+end
+
+Soit("l‘item {string} lié au thème {string}") do |item, topic|
+  # On the remote servers
+end
+
 Soit("le corpus {string} rattaché au portfolio {string}") do |viewpoint, portfolio|
   # On the remote servers
 end
@@ -58,6 +68,7 @@ Soit("{string} le portfolio spécifié dans la configuration") do |portfolio|
   end
 end
 
+<<<<<<< HEAD
 Soit("{string} le portfolio ouvert") do |portfolio|
   visit "/"
 end
@@ -91,9 +102,11 @@ Soit("la liste des rubriques sélectionnées est vide") do
   visit "/"
 end
 
+=======
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 # Events
 
-Quand("un visiteur ouvre la page d'accueil du site") do
+Quand("un visiteur ouvre la page d‘accueil du site") do
   visit "/"
 end
 
@@ -123,6 +136,7 @@ Alors("un des corpus affichés est {string}") do |corpus|
   expect(page).to have_content corpus
 end
 
+<<<<<<< HEAD
 Alors("il doit y avoir au moins {int} items sélectionnés décrits par {string}") do |itemsNb, topic|
   expect(find_link(topic).sibling('.badge').text.scan(/\d+/)[0].to_i).to be >= itemsNb
 end
@@ -139,3 +153,16 @@ Alors ("l'item {string} n'est pas affiché") do |item|
   expect(page).not_to have_content item
 end
 
+=======
+Alors("l‘item {string} est visible sur la page") do |item|
+  expect(page).to have_content(item)
+end
+
+Alors("le thème {string} est visible sur la page") do |topic|
+  expect(page).to have_content(topic)
+end
+
+Alors("le thème {string} est sélectionné") do |topic|
+  expect(page).to have_selector('.Selected')
+end
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
