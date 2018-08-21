@@ -69,6 +69,7 @@ Soit("{string} le portfolio spécifié dans la configuration") do |portfolio|
 end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Soit("{string} le portfolio ouvert") do |portfolio|
   visit "/"
 end
@@ -106,6 +107,10 @@ end
 >>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 # Events
 
+=======
+# Events
+
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 Quand("un visiteur ouvre la page d‘accueil du site") do
   visit "/"
 end
@@ -137,6 +142,7 @@ Alors("un des corpus affichés est {string}") do |corpus|
 end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Alors("il doit y avoir au moins {int} items sélectionnés décrits par {string}") do |itemsNb, topic|
   expect(find_link(topic).sibling('.badge').text.scan(/\d+/)[0].to_i).to be >= itemsNb
 end
@@ -154,6 +160,8 @@ Alors ("l'item {string} n'est pas affiché") do |item|
 end
 
 =======
+=======
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 Alors("l‘item {string} est visible sur la page") do |item|
   expect(page).to have_content(item)
 end
@@ -165,4 +173,7 @@ end
 Alors("le thème {string} est sélectionné") do |topic|
   expect(page).to have_selector('.Selected')
 end
+<<<<<<< HEAD
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
+=======
 >>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4

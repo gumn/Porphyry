@@ -9,6 +9,7 @@ Capybara.default_max_wait_time = 10
 # Conditions
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Soit("{string} l'item affiché") do |item|
   click_on item
 end
@@ -35,6 +36,8 @@ Alors("une des rubriques de l'item est {string}") do |topic|
 end
 
 =======
+=======
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 Soit("l‘item affiché {string}") do |item|
   visit "/"
   expect(page).to have_content(item)
@@ -49,4 +52,7 @@ Quand("un visiteur clique sur le thème {string}") do |topic|
 end
 
 # Outcomes
+<<<<<<< HEAD
+>>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
+=======
 >>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
