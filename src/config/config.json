@@ -1,7 +1,6 @@
 {
-  "user": "vitraux",
+  "user": "chants",
   "services": [
-    "http://argos2.test.hypertopic.org",
-    "http://steatite.hypertopic.org"
+    "http://127.0.0.1:5984/argos/_design/argos/_rewrite"
   ]
 }
