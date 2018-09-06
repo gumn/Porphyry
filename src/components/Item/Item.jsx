@@ -16,11 +16,9 @@ let hypertopic = new Hypertopic(conf.services);
 let itemView = getConfig('itemView', {
   mode: 'picture',
   name: 'name',
-  lyrics: 'lyrics',
-  extract: 'extract',
-  rights: 'rights',
+  image: 'resource',
   linkTo: 'resource',
-  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'music', 'rights', 'suppléments', 'extract']
+  hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable']
 });
 
 function getString(obj) {
@@ -37,8 +35,7 @@ class Item extends Component {
       isCreatable: false,
       topic: []
     };
-    // These bindings are necessary to
-    //!!make `this` work in the callback
+    // These bindings are necessary to make `this` work in the callback
     this._assignTopic = this._assignTopic.bind(this);
     this._removeTopic = this._removeTopic.bind(this);
     this._fetchItem = this._fetchItem.bind(this);
@@ -48,19 +45,10 @@ class Item extends Component {
 
   render() {
     let name = getString(this.state[itemView.name]);
-    let lyrics = getString(this.state[itemView.lyrics]);
-    let rights = getString(this.state[itemView.rights]);
-    //!!
     let attributes = this._getAttributes();
     let viewpoints = this._getViewpoints();
     let attributeButtonLabel = this.state.isCreatable? 'Valider' : 'Ajouter un attribut';
     let attributeForm = this.state.isCreatable? this._getAttributeCreationForm() : '';
-    let lyrics_song;
-    if (rights!=="libre"){
-      lyrics_song = "undefined";
-    } else {
-      lyrics_song = lyrics;
-    }
     return (
       <div className="App container-fluid">
         <Header />
@@ -92,9 +80,6 @@ class Item extends Component {
             <div className="col-md-8 p-4">
               <div className="Subject">
                 <h2 className="h4 font-weight-bold text-center">{name}</h2>
-                <div className="text-center col-md-6 p-4 m-5">
-                 {lyrics_song}
-                 </div>
                 <ShowItem item={this.state} />
               </div>
             </div>
@@ -267,26 +252,12 @@ function Picture(item) {
   let img = getString(item[itemView.image]);
   let name = getString(item[itemView.name]);
   let link = getString(item[itemView.linkTo]);
-  let rights = getString(item[itemView.rights]);
-  let extract = getString(item[itemView.extract]);
-  let partition;
-  if (rights!=="libre"){
-     partition="";
-     extract="";
-  }else{
-  partition=  <a target="_blank" href={link} className="cursor-Pointer">
-       <img src="http://www.icone-png.com/png/33/32891.png" alt={name}/> Partition de {name}
-    </a>;
-  extract= <a target="_blank" href={extract} className="cursor-Pointer">
-    <img src="http://www.icone-png.com/png/6/6095.png" alt={name}/> Ecouter {name}
-  </a> ;
-}
-return (
- <div className="p-3 text-center">
-    <p>{partition}</p>
-   <p>{extract}</p>
- </div>
-
+  return (
+    <div className="p-3">
+      <a target="_blank" href={link} className="cursor-zoom">
+        <img src={img} alt={name}/>
+      </a>
+    </div>
   );
 }
 
