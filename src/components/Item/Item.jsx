@@ -245,6 +245,8 @@ function ShowItem(props) {
   switch (itemView.mode) {
   case 'article':
     return Article(props.item);
+  case 'song':
+    return Song(props.item);
   case 'picture':
     return Picture(props.item);
   default:
@@ -263,7 +265,7 @@ function Article(item) {
   );
 }
 
-function Picture(item) {
+function Song(item) {
   let img = getString(item[itemView.image]);
   let name = getString(item[itemView.name]);
   let link = getString(item[itemView.linkTo]);
@@ -286,7 +288,19 @@ return (
     <p>{partition}</p>
    <p>{extract}</p>
  </div>
+  );
+}
 
+function Picture(item) {
+  let img = getString(item[itemView.image]);
+  let name = getString(item[itemView.name]);
+  let link = getString(item[itemView.linkTo]);
+return (
+ <div className="p-3">
+  <a target="_blank" href={link} className="cursor-zoom">
+    <img src={img} alt={name}/>
+  </a>
+ </div>
   );
 }
 

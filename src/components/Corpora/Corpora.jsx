@@ -43,6 +43,8 @@ function Item(props) {
   switch (listView.mode) {
   case 'article':
     return Article(props.item);
+  case 'song':
+  	return Song(props.item);
   case 'picture':
     return Picture(props.item);
   default:
@@ -72,16 +74,30 @@ function Article(item) {
   );
 }
 
+function Song(item) {
+  let uri = `/item/${item.corpus}/${item.id}`;
+  let img = getString(item[listView.image]);
+  let name = getString(item[listView.name]);
+  return (
+    <div className="Song">
+    <img src={img} alt={name}/>
+      <Link to={uri}>
+        <font color="#000000">{name}</font>
+      </Link>
+    </div>
+  );
+}
+
 function Picture(item) {
   let uri = `/item/${item.corpus}/${item.id}`;
   let img = getString(item[listView.image]);
   let name = getString(item[listView.name]);
   return (
     <div className="Item">
-    <img src={img} alt={name}/>
       <Link to={uri}>
-        <font color="#000000">{name}</font>
+          <img src={img} alt={name}/>
       </Link>
+      <div className="text-center">{name}</div>
     </div>
   );
 }

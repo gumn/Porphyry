@@ -125,12 +125,23 @@ h1 a, h1 a:hover {
   border-radius: 3px;
 }
 
-.Items {
-  -webkit-columns: 2 100px;
-  -moz-columns: 2 100px;
-  -chrome-columns: 2 100px;
-  columns: 2 100px;
+.Song {
   margin: 3px;
+  color: black;
+  flex-wrap: wrap;
+}
+
+.Items {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.Items > .Song {
+  flex: 1 0 200px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  flex-direction: column;
 }
 
 .Item {
