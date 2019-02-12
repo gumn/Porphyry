@@ -44,6 +44,7 @@ class Item extends Component {
     this._fetchItem = this._fetchItem.bind(this);
     this._checkIsCreatable = this._checkIsCreatable.bind(this);
     this.deleteAttribute = this.deleteAttribute.bind(this);
+    this.user=conf.user || window.location.hostname.split('.', 1)[0];
   }
 
   render() {
@@ -120,11 +121,8 @@ class Item extends Component {
 
   _getViewpoints() {
     return Object.entries(this.state.topic).map(v =>
-      <div>
-        <hr/>
         <Viewpoint key={v[0]} id={v[0]} topics={v[1]}
           assignTopic={this._assignTopic} removeTopic={this._removeTopic} />
-      </div>
     );
   }
 
@@ -145,8 +143,23 @@ class Item extends Component {
     let params = this.props.match.params;
     hypertopic.getView(uri).then((data) => {
       let item = data[params.corpus][params.item];
-      item.topic = (item.topic) ? groupBy(item.topic, ['viewpoint']) : [];
+      let itemTopics = (item.topic) ? groupBy(item.topic, ['viewpoint']) : {};
+      let topics=this.state.topic || {};
+      for (let id in itemTopics) {
+        topics[id]=itemTopics[id];
+      }
+      item.topic=topics;
       this.setState(item);
+    }).then(() => hypertopic.getView(`/user/${this.user}`))
+      .then((data) => {
+      let user = data[this.user] || {};
+      if (user.viewpoint) {
+        let topic=this.state.topic;
+        for (let vp of user.viewpoint) {
+          topic[vp.id]=topic[vp.id] || [];
+        }
+        this.setState({topic});
+      }
     });
   }
 
@@ -231,9 +244,6 @@ class Item extends Component {
           newState.topic[topicToDelete.viewpoint] = newState.topic[
             topicToDelete.viewpoint
           ].filter(stateTopic => topicToDelete.id !== stateTopic.id);
-          if (newState.topic[topicToDelete.viewpoint].length === 0) {
-            delete newState.topic[topicToDelete.viewpoint];
-          }
           this.setState(newState);
         })
         .catch(error => console.log(`error : ${error}`));

@@ -15,7 +15,7 @@ class Corpora extends Component {
     let items = this._getItems();
     let count = this.props.items.length;
     let total = this.props.from;
-    return(
+    return (
       <div className="col-md-8 p-4">
         <div className="Subject">
           <h2 className="h4 font-weight-bold text-center">
@@ -32,8 +32,8 @@ class Corpora extends Component {
 
   _getItems() {
     return this.props.items.map(item =>
-        <Item key={item.name} item={item}
-          id={item.corpus+'/'+item.name} />
+      <Item key={item.name} item={item}
+        id={item.corpus+'/'+item.name} />
     );
   }
 
@@ -41,14 +41,14 @@ class Corpora extends Component {
 
 function Item(props) {
   switch (listView.mode) {
-  case 'article':
-    return Article(props.item);
-  case 'song':
-  	return Song(props.item);
-  case 'picture':
-    return Picture(props.item);
-  default:
-    return Picture(props.item);
+    case 'article':
+      return Article(props.item);
+    case 'song':
+  	  return Song(props.item);
+    case 'picture':
+      return Picture(props.item);
+    default:
+     return Picture(props.item);
   }
 }
 
@@ -95,7 +95,7 @@ function Picture(item) {
   return (
     <div className="Item">
       <Link to={uri}>
-          <img src={img} alt={name}/>
+        <img src={img} alt={name} />
       </Link>
       <div className="text-center">{name}</div>
     </div>

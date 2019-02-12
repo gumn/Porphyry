@@ -1,7 +1,10 @@
 {
   "user": "chants",
   "services": [
-  	"http://127.0.0.1:5984/ztest_03/_design/argos/_rewrite"
+  	"http://127.0.0.1:5984/ztest_21/_design/argos/_rewrite"
+  ],
+  "reservedViewpoints": [
+    "U01 - Indications du Père Jacques Breton"
   ],
   "customization": {
   	"chants": {
