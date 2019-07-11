@@ -1,10 +1,12 @@
 require 'capybara/cucumber'
-require 'selenium/webdriver'
+require 'capybara/cuprite'
 
 Capybara.run_server = false
-Capybara.default_driver = :selenium_chrome_headless
+Capybara.default_driver = :cuprite
+Capybara.javascript_driver = :cuprite
 Capybara.app_host = "http://localhost:3000"
 Capybara.default_max_wait_time = 10
+
 
 def getUUID(itemName)
   uuid = nil
@@ -21,7 +23,20 @@ def getUUID(itemName)
   return uuid
 end
 
+
+def getPassword(username)
+  password = nil
+  case username
+  when "alice"
+    password = "whiterabbit"
+  end
+  return password
+end
 # Conditions
+
+Soit("l'item {string} existant") do |item|
+  # On the remote servers
+end
 
 Soit("le point de vue {string} rattaché au portfolio {string}") do |viewpoint, portfolio|
   # On the remote servers
@@ -68,43 +83,16 @@ Soit("{string} le portfolio spécifié dans la configuration") do |portfolio|
   end
 end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Soit("{string} le portfolio ouvert") do |portfolio|
-  visit "/"
-end
-
-Soit("{string} une des rubriques développées") do |topic|
-  find_link(topic).sibling('.oi').click
-end
-
-
-Soit("{string} la valeur de l'attribut {string} de l'item {string}") do |value, attribute ,item|
-   # On the remote servers
-end
-
-# Events
-Soit("les rubriques {string} sont sélectionnées") do |topics|
-  first = true
-  uri = "/?"
-  topics.split("|").each do |topic|
-    uuid = getUUID(topic)
-    if (first)
-      uri += "t=" + uuid
-      first = false
-    else
-      uri += "&t=" + uuid
-    end
-  end
-  visit uri
-end
-
-Soit("la liste des rubriques sélectionnées est vide") do
-  visit "/"
-end
-
 =======
->>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
+Soit ("l'utilisateur {string} connecté") do |username|
+  click_link('Se connecter...')
+  find('input[placeholder="nom d\'utilisateur"]').set username
+  find("input[placeholder='mot de passe']").set getPassword(username)
+  click_on('Se connecter')
+  expect(page).to have_content(username)
+end
+
+>>>>>>> bebe38d117566fdca489d8855a56aacf4c85e3cb
 # Events
 
 =======
@@ -127,6 +115,23 @@ Quand("on choisit l'item {string}") do |item|
   click_on item
 end
 
+Quand("l'utilisateur exclue la rubrique {string}") do |topic|
+  click_on topic
+end
+
+Quand ("l'utilisateur crée un item {string} dans le corpus {string}") do |name, corpus|
+  find_button(:id => corpus).click
+  expect(page).to have_content("undefined")
+  find_by_id("new-attribute").set "name:#{name}"
+  find_button(class: ['btn', 'btn-sm', 'ValidateButton']).click
+end
+
+Quand ("l'utilisateur sélectionne {string} entre la rubrique {string} et la rubrique {string}") do |union, topic1, topic2|
+  within('.Status') do
+    find(:xpath, "//span[contains(text(), topic1)]/following-sibling::button", text: union, match: :first).click
+  end
+end
+
 # Outcomes
 
 Alors("le titre affiché est {string}") do |portfolio|
@@ -141,27 +146,7 @@ Alors("un des corpus affichés est {string}") do |corpus|
   expect(page).to have_content corpus
 end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Alors("il doit y avoir au moins {int} items sélectionnés décrits par {string}") do |itemsNb, topic|
-  expect(find_link(topic).sibling('.badge').text.scan(/\d+/)[0].to_i).to be >= itemsNb
-end
-
-Alors("les rubriques surlignées sont au nombre de {int}") do |topicNb|
-  expect(page).to have_selector('.Selected', :count => topicNb)
-end
-
-Alors ("l'item {string} est affiché") do |item|
-  expect(page).to have_content item
-end
-
-Alors ("l'item {string} n'est pas affiché") do |item|
-  expect(page).not_to have_content item
-end
-
 =======
-=======
->>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 Alors("l‘item {string} est visible sur la page") do |item|
   expect(page).to have_content(item)
 end
@@ -173,7 +158,5 @@ end
 Alors("le thème {string} est sélectionné") do |topic|
   expect(page).to have_selector('.Selected')
 end
-<<<<<<< HEAD
->>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
 =======
->>>>>>> ccbed0cdaeb99150b383ab3f939a370d518aa3c4
+>>>>>>> bebe38d117566fdca489d8855a56aacf4c85e3cb
