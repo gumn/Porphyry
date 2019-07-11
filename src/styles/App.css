@@ -92,6 +92,12 @@ h1 a, h1 a:hover {
   justify-content: flex-start;
 }
 
+.Topics .newTopic {
+  padding:5px;
+  width: 85%;
+  color: #999;
+}
+
 .Topic {
   text-align: left;
   list-style-type: none;
@@ -123,6 +129,16 @@ h1 a, h1 a:hover {
   font-weight: bold;
   padding: 1px;
   border-radius: 3px;
+}
+.Excluded {
+  background-color: rgba(238, 51, 51, 0.6);
+  font-weight: bold;
+  text-decoration: line-through !important;
+  padding: 1px;
+  border-radius: 3px;
+}
+.removeUnderlineOnFocus:focus {
+  text-decoration: none;
 }
 
 .Song {
@@ -158,6 +174,15 @@ h1 a, h1 a:hover {
   display: table-row;
 }
 
+.AttributeForm {
+  padding: 20px;
+  padding-top: 5px;
+}
+
+.AttributeForm input.form-control {
+  text-align: center;
+}
+
 .Key {
   display: table-cell;
   padding: 5px;
@@ -172,10 +197,18 @@ h1 a, h1 a:hover {
   font-weight: bold;
 }
 
-.TopicPath > .DeleteTopicButton, .Attribute > .DeleteTopicButton {
+.Attribute .buttons {
+  display: table-cell;
+  white-space: nowrap;
+}
+
+.DeleteButton, .EditButton {
   visibility: hidden;
 }
-.TopicPath:hover > .DeleteTopicButton, .Attribute:hover > .DeleteTopicButton {
+
+div:hover > .buttons > button,
+div:hover > .DeleteButton,
+div:hover > .EditButton {
   visibility: visible;
 }
 
@@ -226,11 +259,7 @@ h1 a, h1 a:hover {
   opacity: 1;
 }
 
-.Outliner ul {
-  background-color: whitesmoke;
-}
-
-.TopicAdding {
+.TopicAdding, .AttributeForm {
   padding-top: 5px;
   display: flex;
   flex-direction: row;
@@ -238,18 +267,22 @@ h1 a, h1 a:hover {
   width: 100%;
 }
 
-.TopicCancelButton {
-  background-color: #8b0000;
+.ValidateButton {
+  background-color: #abd14b;
   color: ivory;
 }
 
-.TopicValidateButton {
+.inactive .ValidateButton {
+  visibility: hidden;
+}
+
+.modify .ValidateButton {
   background-color: #f1bb5b;
   color: ivory;
 }
 
-.TopicValidateButton:disabled,
-.TopicValidateButton[disabled] {
+.ValidateButton:disabled,
+.ValidateButton[disabled] {
   background-color: #cccccc;
   color: dimgrey;
 }
@@ -264,13 +297,23 @@ h1 a, h1 a:hover {
   width: 17vw;
 }
 
-.DeleteTopicButton {
+div.attributeInput,
+div.autosuggest {
+  width:85%;
+}
+
+.DeleteButton {
   background-color: #8b0000;
   color: ivory;
 }
 
 .creationButton {
   margin-bottom: 1rem;
+}
+
+.creationItemButton{
+  padding: 1px;
+  border-radius: 15px;
 }
 
 .Return {
@@ -281,53 +324,70 @@ h1 a, h1 a:hover {
   right:40px;
 }
 
-.f-no-select {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.m-tree {
+ul.Outliner,
+.outliner-node > ul {
   position: relative;
-  overflow: hidden;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  padding-left: 20px;
 }
-.m-draggable {
-  position: absolute;
-  opacity: 0.8;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.m-node.placeholder > * {
-  visibility: hidden;
-}
-.m-node.placeholder {
-  border: 1px dashed #ccc;
-}
-.m-node .inner {
-  position: relative;
+
+.outliner-node .caret {
   cursor: pointer;
-  padding-left: 15px;
-}
-.m-node .collapse {
-  display: block;
   position: absolute;
-  left: 0;
-  cursor: pointer;
+  left: 0px;
+  min-width:25px;
+  min-height: 20px;
 }
-.m-node .caret-right:before {
+
+.outliner-node div.after-handle,
+.outliner-node li.first-handle {
+  height:25px;
+  border-style:dashed;
+  border-width: 1px;
+  border-color:black;
+  background-color: lightgrey;
+  display:none;
+}
+
+.outliner-node.dragged-after > div.after-handle,
+.outliner-node.dragged-into > ul > li.first-handle {
+  display:inline;
+}
+
+.outliner-node.has-children.closed > .caret:before {
   content: '\25B8';
 }
-.m-node .caret-down:before {
+.outliner-node.has-children.open > .caret:before {
   content: '\25BE';
+}
+
+.outliner-node.closed > ul {
+  display: none;
+}
+
+.Outliner li {
+  list-style-type: none;
+  min-height: 2em;
+}
+
+.Outliner li.dragged {
+  background-color: lightgrey;
+}
+
+.Outliner li.active > span.wrap {
+  background-color: rgb(199, 222, 237);
+}
+
+.Outliner input {
+  border: none;
+  background: transparent;
+  width:100%;
+}
+
+.id {
+  display: none;
+  font-size: 0.8em;
+  color:#111;
+  padding:1em;
 }
 
 .wrap:hover button{display: inherit;margin-right: 10px;z-index: 999}
@@ -348,6 +408,7 @@ h1 a, h1 a:hover {
 
 .wrap {
   min-height: 34px;
+  display: block;
 }
 .wrap button {
   display: none;
@@ -362,6 +423,7 @@ h1 a, h1 a:hover {
   font-size: .6rem;
   line-height: 1.5;
   padding: .15rem .3rem;
+  margin-left:2px;
 }
 
 .btn-light {
@@ -374,4 +436,3 @@ h1 a, h1 a:hover {
 .btn:not(.btn-xs) .oi {
   vertical-align: middle;
 }
-

@@ -3,6 +3,9 @@ node_js: lts/*
 
 addons:
   chrome: stable
+  apt:
+    packages:
+    - xsel
 
 cache:
   directories:
@@ -11,5 +14,9 @@ cache:
 
 install:
   - npm install
-  - npm start >/dev/null &
-  - gem install cucumber rspec capybara selenium-webdriver chromedriver-helper
+  - bundle install
+
+script:
+  - npm run build
+  - npm run preprod
+  - npm run test

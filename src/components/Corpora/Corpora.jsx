@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import getConfig from '../../config/config.js';
+import ItemCreator from '../Item/ItemCreator.jsx';
 
 // Get the configured list display mode
 let listView = getConfig('listView', {
@@ -15,14 +16,17 @@ class Corpora extends Component {
     let items = this._getItems();
     let count = this.props.items.length;
     let total = this.props.from;
+    let listIds = this.props.ids.map((item) =>
+      <div>{item} <ItemCreator corpus={item} /></div>
+    );
     return(
       <div className="col-md-8 p-4">
         <div className="Subject">
           <h2 className="h4 font-weight-bold text-center">
-            {this.props.ids.join(' + ')}
+            {listIds}
             <span className="badge badge-pill badge-light ml-4">{count} / {total}</span>
           </h2>
-          <div className="Items m-2">
+          <div className="Items m-3">
             {items}
           </div>
         </div>
@@ -32,8 +36,8 @@ class Corpora extends Component {
 
   _getItems() {
     return this.props.items.map(item =>
-        <Item key={item.name} item={item}
-          id={item.corpus+'/'+item.name} />
+        <Item key={item.id} item={item}
+          id={item.corpus+'/'+item.id} />
     );
   }
 
@@ -82,8 +86,9 @@ function Song(item) {
     <div className="Song">
     <img src={img} alt={name}/>
       <Link to={uri}>
-        <font color="#000000">{name}</font>
+        <img src={img} alt={name}/>
       </Link>
+      <div className="text-center">{name}</div>
     </div>
   );
 }

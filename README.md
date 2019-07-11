@@ -15,6 +15,22 @@ Installation requirements
 
 * Git client
 * Node.js
+* [Argos v4](https://github.com/Hypertopic/Argos) (on a server)
+
+The CouchDB instance thats hosts Argos must be set so that:
+
+```ini
+[HTTPD]
+enable_cors = true
+secure_rewrites = false
+
+[CORS]
+origins = http://localhost:3000
+methods = GET, PUT, POST, HEAD, DELETE
+headers = accept, authorization, content-type, origin, referer, if-match
+```
+
+Create user `alice`.
 
 Installation procedure
 ----------------------
@@ -34,7 +50,7 @@ Build for production
 Tests requirements
 ------------------
 
-    gem install cucumber rspec capybara selenium-webdriver chromedriver-helper
+    bundle install
 
 If it fails on macOS because of `libffi`, it can be fixed by brewing and linking an up-to-date version of the library (at your own risk).
 
