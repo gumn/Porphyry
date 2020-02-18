@@ -14,12 +14,13 @@ let hypertopic = new Hypertopic(conf.services);
 
 // Get the configured item display mode
 let itemView = getConfig('itemView', {
-  mode: 'picture',
+  mode: 'song',
   name: 'name',
   lyrics: 'lyrics',
   extract: 'extract',
   rights: 'rights',
   linkTo: 'resource',
+  url: 'lien',
   hiddenProps: ['topic', 'resource', 'thumbnail', 'isCreatable', 'lyrics', 'music', 'rights', 'suppléments', 'extract']
 });
 
@@ -56,12 +57,15 @@ class Item extends Component {
     let viewpoints = this._getViewpoints();
     let attributeButtonLabel = this.state.isCreatable? 'Valider' : 'Ajouter un attribut';
     let attributeForm = this.state.isCreatable? this._getAttributeCreationForm() : '';
+    let url;
     let lyrics_song;
-    if (rights!=="libre"){
-      lyrics_song = "undefined";
+    if (rights!=="libre" || lyrics == 'undefined'){
+      lyrics_song = 'Pas de paroles disponibles';
     } else {
       lyrics_song = lyrics;
     }
+    url= <a target="_blank" href={this.state[itemView.url]} className="cursor-Pointer">{this.state[itemView.url]}
+    </a> ;
     return (
       <div className="App container-fluid">
         <Header />
@@ -93,9 +97,12 @@ class Item extends Component {
             <div className="col-md-8 p-4">
               <div className="Subject">
                 <h2 className="h4 font-weight-bold text-center">{name}</h2>
-                <div className="text-center col-md-6 p-4 m-5">
+                <pre className="text-center col-md-10 p-4 m-4">
                  {lyrics_song}
-                 </div>
+                 </pre>
+                 <div className="text-center">
+                  {url}
+                  </div>
                 <ShowItem item={this.state} />
               </div>
             </div>
@@ -278,7 +285,6 @@ function Article(item) {
 function Song(item) {
   let img = getString(item[itemView.image]);
   let name = getString(item[itemView.name]);
-  let link = getString(item[itemView.linkTo]);
   let rights = getString(item[itemView.rights]);
   let extract = getString(item[itemView.extract]);
   let partition;
@@ -286,17 +292,14 @@ function Song(item) {
      partition="";
      extract="";
   }else{
-  partition=  <a target="_blank" href={link} className="cursor-Pointer">
-       <img src="http://www.icone-png.com/png/33/32891.png" alt={name}/> Partition de {name}
-    </a>;
+  partition= <img src={item[itemView.linkTo]} alt={name}/>;
   extract= <a target="_blank" href={extract} className="cursor-Pointer">
     <img src="http://www.icone-png.com/png/6/6095.png" alt={name}/> Ecouter {name}
   </a> ;
-}
+  }
 return (
  <div className="p-3 text-center">
-    <p>{partition}</p>
-   <p>{extract}</p>
+    <p>partition de {name} : </p>{partition}
  </div>
   );
 }
