@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import getConfig from '../../config/config.js';
 import ItemCreator from '../Item/ItemCreator.jsx';
 
-// Get the configured list display mode
-let listView = getConfig('listView', {
+let listView = {
   mode: 'picture',
   name: 'name',
   image: 'thumbnail'
-});
+};
 
 class Corpora extends Component {
 
@@ -17,9 +15,9 @@ class Corpora extends Component {
     let count = this.props.items.length;
     let total = this.props.from;
     let listIds = this.props.ids.map((item) =>
-      <div>{item} <ItemCreator corpus={item} /></div>
+      <div>{item} <ItemCreator corpus={item} conf={this.props.conf} /></div>
     );
-    return(
+    return (
       <div className="col-md-8 p-4">
         <div className="Subject">
           <h2 className="h4 font-weight-bold text-center">
@@ -36,8 +34,7 @@ class Corpora extends Component {
 
   _getItems() {
     return this.props.items.map(item =>
-        <Item key={item.id} item={item}
-          id={item.corpus+'/'+item.id} />
+      <Item key={item.id} item={item} id={item.corpus + '/' + item.id} />
     );
   }
 
@@ -45,12 +42,12 @@ class Corpora extends Component {
 
 function Item(props) {
   switch (listView.mode) {
-  case 'article':
-    return Article(props.item);
-  case 'picture':
-    return Picture(props.item);
-  default:
-    return Picture(props.item);
+    case 'article':
+      return Article(props.item);
+    case 'picture':
+      return Picture(props.item);
+    default:
+      return Picture(props.item);
   }
 }
 
