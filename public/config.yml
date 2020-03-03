@@ -1,4 +1,11 @@
-user: vitraux
-services:
-  - http://argos2.test.hypertopic.org
-  - http://steatite.hypertopic.org
+user: chants
+services: 
+ - 
+   "http://127.0.0.1:5984/ztest_21/_design/argos/_rewrite"
+reservedViewpoints: 
+ - 
+   "U01 - Indications du Père Jacques Breton"
+customization: 
+ chants: 
+  listView: 
+   mode: song
