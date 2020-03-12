@@ -14,8 +14,11 @@ class Corpora extends Component {
     let items = this._getItems();
     let count = this.props.items.length;
     let total = this.props.from;
-    let listIds = this.props.ids.map((item) =>
-      <div>{item} <ItemCreator corpus={item} conf={this.props.conf} /></div>
+    let listIds = this.props.ids.map((corpusId) =>
+      <div key={corpusId}>
+        {corpusId}
+        <ItemCreator corpus={corpusId} conf={this.props.conf} />
+      </div>
     );
     return (
       <div className="col-md-8 p-4">
