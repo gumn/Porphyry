@@ -7,7 +7,7 @@ class Authenticated extends Component {
     this.state = {
       user: '',
       ask: false
-    }
+    };
     this.handleAsk = this.handleAsk.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -22,7 +22,7 @@ class Authenticated extends Component {
       );
     }
     if (this.state.ask) {
-      return(
+      return (
         <form className="Authenticated" onSubmit={this.handleLogin}>
           <input placeholder="nom d'utilisateur" ref={(x) => this.login = x} />
           <input placeholder="mot de passe" ref={(x) => this.password = x} type="password" />
@@ -41,7 +41,7 @@ class Authenticated extends Component {
     return this.props.conf.then(x => {
       options = options || {};
       options.credentials = 'include';
-      return fetch(x.services[0] + '/_session',  options)
+      return fetch(x.services[0] + '/_session', options);
     });
   }
 
@@ -71,21 +71,21 @@ class Authenticated extends Component {
   _openSession() {
     let user = this.login.value;
     this.requestSession({
-      method:'POST',
+      method: 'POST',
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body:`name=${user}&password=${this.password.value}`
+      body: `name=${user}&password=${this.password.value}`
     })
       .then(x => {
         if (!x.ok) throw new Error('Bad credentials!');
-        this.setState({user})
+        this.setState({user});
       })
       .catch(() => this.setState({user: ''}));
   }
 
   _closeSession() {
-    this.requestSession({method:'DELETE'})
+    this.requestSession({method: 'DELETE'})
       .then(() => this.setState({user: ''}));
   }
 
