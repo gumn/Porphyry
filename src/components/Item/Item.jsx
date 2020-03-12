@@ -29,8 +29,8 @@ class Item extends Component {
   constructor() {
     super();
     this.state = {
-      attributeInputValue:"",
-      item:{topic:[]}
+      attributeInputValue: '',
+      item: {topic: []}
     };
     // These bindings are necessary to make `this` work in the callback
     this._assignTopic = this._assignTopic.bind(this);
@@ -86,7 +86,7 @@ class Item extends Component {
     return Object.entries(this.state.item)
       .filter(x => !itemView.hiddenProps.includes(x[0]))
       .map(x => (
-        <Attribute  key={x[0]} myKey={x[0]} value={x[1][0]}
+        <Attribute key={x[0]} myKey={x[0]} value={x[1][0]}
           setAttribute={this._setAttribute.bind(this)} deleteAttribute={this._deleteAttribute}/>
       ));
   }
@@ -99,13 +99,13 @@ class Item extends Component {
   }
 
   componentDidMount() {
-    let start=new Date().getTime();
-    let self=this;
+    let start = new Date().getTime();
+    let self = this;
     this._fetchItem().then(() => {
-      let end=new Date().getTime();
-      let elapsedTime=end-start;
+      let end = new Date().getTime();
+      let elapsedTime = end - start;
 
-      let intervalTime=Math.max(10000,elapsedTime*5);
+      let intervalTime = Math.max(10000, elapsedTime * 5);
       self._timer = setInterval(
         () => {
           self._fetchItem();
@@ -122,12 +122,12 @@ class Item extends Component {
   async _getOrCreateItem() {
     let hypertopic = new Hypertopic((await conf).services);
     return hypertopic.get({_id: this.props.match.params.item})
-    .catch(e => {
-      return {
-        _id: this.props.match.params.item,
-        item_corpus: this.props.match.params.corpus
-      };
-    });
+      .catch(e => {
+        return {
+          _id: this.props.match.params.item,
+          item_corpus: this.props.match.params.corpus
+        };
+      });
   }
 
   async _fetchItem() {
@@ -138,77 +138,77 @@ class Item extends Component {
     return hypertopic.getView(uri).then((data) => {
       let item = data[params.corpus][params.item];
       let itemTopics = (item.topic) ? groupBy(item.topic, ['viewpoint']) : {};
-      let topics=this.state.item.topic || {};
+      let topics = this.state.item.topic || {};
       for (let id in itemTopics) {
-        topics[id]=itemTopics[id];
+        topics[id] = itemTopics[id];
       }
-      item.topic=topics;
+      item.topic = topics;
       this.setState({item});
     }).then(() => hypertopic.getView(`/user/${SETTINGS.user}`))
       .then((data) => {
-      let user = data[this.user] || {};
-      if (user.viewpoint) {
-        let topic=this.state.item.topic;
-        for (let vp of user.viewpoint) {
-          topic[vp.id]=topic[vp.id] || [];
+        let user = data[this.user] || {};
+        if (user.viewpoint) {
+          let topic = this.state.item.topic;
+          for (let vp of user.viewpoint) {
+            topic[vp.id] = topic[vp.id] || [];
+          }
+          this.setState({topic});
         }
-        this.setState({topic});
-      }
-    });
+      });
   }
 
   _getAttributeCreationForm() {
-    var classes=["AttributeForm","input-group"];
+    var classes = ['AttributeForm', 'input-group'];
 
     function isValidValue(attribute) {
-      let [key,value]=attribute.split(":").map(t => t.trim());
+      let [key, value] = attribute.split(':').map(t => t.trim());
       return key && value && !itemView.hiddenProps.includes(key);
     }
 
-    let attributeInputChange=(e) => {
-      this.setState({ attributeInputValue:e.target.value });
-    }
+    let attributeInputChange = (e) => {
+      this.setState({ attributeInputValue: e.target.value });
+    };
 
-    let attributeInputChangeKeyDown=(e) => {
-      if (e.key==="Escape") {
-        this.setState({ attributeInputValue:"" });
+    let attributeInputChangeKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        this.setState({ attributeInputValue: '' });
       }
-    }
+    };
 
-    let attributeInputFocus=(e) => {
+    let attributeInputFocus = (e) => {
       if (this.blurTimeout) {
-        this.blurTimeout=clearTimeout(this.blurTimeout);
+        this.blurTimeout = clearTimeout(this.blurTimeout);
       }
-      this.setState({attributeInputFocus:true});
-    }
+      this.setState({attributeInputFocus: true});
+    };
 
-    let attributeInputBlur=(e) => {
-      this.blurTimeout=setTimeout(() => {
-        this.setState({attributeInputFocus:false})
+    let attributeInputBlur = (e) => {
+      this.blurTimeout = setTimeout(() => {
+        this.setState({attributeInputFocus: false});
       }, 200);
-    }
+    };
 
-    var valid=false;
+    var valid = false;
 
     if (!this.state.attributeInputFocus) {
-      classes.push("inactive");
+      classes.push('inactive');
     } else if (isValidValue(this.state.attributeInputValue)) {
-      valid=true;
-      let editedAttribute=this.state.attributeInputValue.split(":").map(t => t.trim())[0];
+      valid = true;
+      let editedAttribute = this.state.attributeInputValue.split(':').map(t => t.trim())[0];
       if (this.state.item[editedAttribute]) {
-        classes.push("modify")
+        classes.push('modify');
       }
     }
 
-    var placeholder="Ajouter un attribut et une valeur...";
+    var placeholder = 'Ajouter un attribut et une valeur...';
     if (this.state.attributeInputFocus) {
-      placeholder="attribut : valeur";
+      placeholder = 'attribut : valeur';
     }
 
     return (
-      <form onSubmit={this._submitAttribute} className={classes.join(" ")}>
+      <form onSubmit={this._submitAttribute} className={classes.join(' ')}>
         <div className="attributeInput">
-          <input ref={(input) => this.attributeInput=input} value={this.state.attributeInputValue}
+          <input ref={(input) => this.attributeInput = input} value={this.state.attributeInputValue}
             onChange={attributeInputChange} onKeyDown={attributeInputChangeKeyDown}
             onFocus={attributeInputFocus} onBlur={attributeInputBlur}
             id="new-attribute" className="form-control" placeholder={placeholder} type="text" />
@@ -227,33 +227,33 @@ class Item extends Component {
   }
 
   async _setAttribute(key, value) {
-    if (key!=='' && value!=='') {
+    if (key !== '' && value !== '') {
       let hypertopic = new Hypertopic((await conf).services);
       let attribute = {[key]: [value]};
       return this._getOrCreateItem()
         .then(x => Object.assign(x, attribute))
         .then(hypertopic.post)
         .then(_ => this.setState(previousState => {
-          previousState.item[key]=[value];
-          return previousState
+          previousState.item[key] = [value];
+          return previousState;
         }))
         .catch((x) => console.error(x.message));
-    } else {
-      console.error('Créez un attribut non vide');
-      return new Promise().fail();
     }
+    /*else*/
+    console.error('Créez un attribut non vide');
+    return new Promise().fail();
   }
 
   _submitAttribute(e) {
     e.preventDefault();
     let key_value = this.state.attributeInputValue;
     if (key_value) {
-      let [key,value]=key_value.split(":").map(t => t.trim());
+      let [key, value] = key_value.split(':').map(t => t.trim());
       if (key && value) this._setAttribute(key, value);
       else return false;
     }
     this.setState({
-      attributeInputValue: ""
+      attributeInputValue: ''
     });
     this.attributeInput.focus();
     return false;
@@ -271,7 +271,7 @@ class Item extends Component {
       .then(_ => {
         this.setState(previousState => {
           delete previousState.item[key];
-          return {item:previousState.item};
+          return {item: previousState.item};
         });
       })
       .catch(_error);
@@ -281,7 +281,7 @@ class Item extends Component {
     let hypertopic = new Hypertopic((await conf).services);
     return this._getOrCreateItem()
       .then(data => {
-        data.topics=data.topics || {};
+        data.topics = data.topics || {};
         data.topics[topicToAssign] = { viewpoint: viewpointId };
         return data;
       })
@@ -293,18 +293,17 @@ class Item extends Component {
             id: topicToAssign
           });
           return newState;
-        })
+        });
       })
       .catch(error => console.error(error));
   }
-
 
   async _removeTopic(topicToDelete) {
     let hypertopic = new Hypertopic((await conf).services);
     if (window.confirm('Voulez-vous réellement que l\'item affiché ne soit plus décrit à l\'aide de cette rubrique ?')) {
       return this._getOrCreateItem()
         .then(data => {
-          data.topics=data.topics || {};
+          data.topics = data.topics || {};
           delete data.topics[topicToDelete.id];
           return data;
         })
@@ -326,21 +325,21 @@ class Attribute extends Component {
   constructor() {
     super();
     this.state = {
-      editedValue:""
+      editedValue: ''
     };
   }
 
   onKeyDown = (event) => {
-    if (event.key==="Escape") {
-      this.setState({edit:false});
+    if (event.key === 'Escape') {
+      this.setState({edit: false});
     }
-    if (event.key==="Enter") {
+    if (event.key === 'Enter') {
       this.submitValue(event);
     }
   };
 
   handleChange = (e) => {
-    this.setState({editedValue:e.target.value});
+    this.setState({editedValue: e.target.value});
   };
 
   handleFocus = (e) => {
@@ -350,36 +349,36 @@ class Attribute extends Component {
   }
 
   setEdit = (e) => {
-    this.setState({edit:true,editedValue:this.props.value});
+    this.setState({edit: true, editedValue: this.props.value});
   }
 
   submitValue = (e) => {
-    this.props.setAttribute(this.props.myKey,this.state.editedValue).then(
-      _ => this.setState({edit:false})
+    this.props.setAttribute(this.props.myKey, this.state.editedValue).then(
+      _ => this.setState({edit: false})
     );
   }
 
   render() {
-    var valueCtl,deleteButton,editButton;
-    let valid=this.state.editedValue;
+    var valueCtl, deleteButton, editButton;
+    let valid = this.state.editedValue;
     if (!this.state.edit) {
-      valueCtl=(
+      valueCtl = (
         <div className="Value">
           {this.props.value}
         </div>
       );
-      editButton=(
+      editButton = (
         <button onClick={this.setEdit} className="btn btn-xs EditButton">
           <span className="oi oi-pencil"> </span>
         </button>
       );
-      deleteButton=(
-        <button onClick={this.props.deleteAttribute.bind(this,this.props.myKey)} className="btn btn-xs DeleteButton">
+      deleteButton = (
+        <button onClick={this.props.deleteAttribute.bind(this, this.props.myKey)} className="btn btn-xs DeleteButton">
           <span className="oi oi-x"> </span>
         </button>
       );
     } else {
-      valueCtl=(
+      valueCtl = (
         <div className="Value edit">
           <input value={this.state.editedValue} placeholder="valeur obbligatoire"
             autoFocus
@@ -408,17 +407,17 @@ class Attribute extends Component {
         </div>
       </div>
     );
-    }
+  }
 }
 
 function ShowItem(props) {
   switch (itemView.mode) {
-  case 'article':
-    return Article(props.item);
-  case 'picture':
-    return Picture(props.item);
-  default:
-    return Picture(props.item);
+    case 'article':
+      return Article(props.item);
+    case 'picture':
+      return Picture(props.item);
+    default:
+      return Picture(props.item);
   }
 }
 
@@ -490,14 +489,14 @@ class Viewpoint extends Component {
         }
 
         if (
-          !alreadyAssigned &&
-          topic.name &&
-          topic.name[0] &&
-          topic.name[0].toLowerCase().slice(0, inputLength) === inputValue
+          !alreadyAssigned
+          && topic.name
+          && topic.name[0]
+          && topic.name[0].toLowerCase().slice(0, inputLength) === inputValue
         ) {
           let fullName =
-            topic.name[0].slice(0, inputLength).toUpperCase() +
-            topic.name[0].slice(inputLength);
+            topic.name[0].slice(0, inputLength).toUpperCase()
+            + topic.name[0].slice(inputLength);
           let currentTopic = topic;
           while (currentTopic.broader) {
             currentTopic = this.state.topics[currentTopic.broader[0].id];
@@ -515,30 +514,30 @@ class Viewpoint extends Component {
 
   onTopicInputFocus = (event) => {
     if (this.blurTimeout) {
-      this.blurTimeout=clearTimeout(this.blurTimeout);
+      this.blurTimeout = clearTimeout(this.blurTimeout);
     }
-    this.setState({hasFocus:true});
+    this.setState({hasFocus: true});
   }
 
   onTopicInputBlur = (event) => {
-    this.blurTimeout=setTimeout(() => {
-      this.setState({hasFocus:false});
-    },200);
+    this.blurTimeout = setTimeout(() => {
+      this.setState({hasFocus: false});
+    }, 200);
   }
 
   onTopicInputkeyDown = (event) => {
-    if (event.key==="Escape") {
+    if (event.key === 'Escape') {
       this.clearInput();
     }
   };
 
   onTopicInputChange = (event, { newValue }) => {
     if (this.state.currentSelection) {
-      newValue="";
+      newValue = '';
     }
     this.setState({
       topicInputvalue: newValue,
-      currentSelection:""
+      currentSelection: ''
     });
   };
 
@@ -572,7 +571,7 @@ class Viewpoint extends Component {
       currentSelection: '',
       currentPreSelection: '',
       suggestions: [],
-      newTopic:""
+      newTopic: ''
     });
   };
 
@@ -601,26 +600,26 @@ class Viewpoint extends Component {
       suggestion: 'dropdown-item',
       suggestionHighlighted: 'active'
     };
-    var classes=["TopicAdding","input-group"];
+    var classes = ['TopicAdding', 'input-group'];
     if (!this.state.hasFocus) {
-      classes.push("inactive");
+      classes.push('inactive');
     }
     var newTopic;
     if (this.state.newTopic) {
-      newTopic=<div className="newTopic">Ajouter nouveau : &gt; {this.state.newTopic}
-      <button type="button" className="btn btn-xs ml-3 float-right DeleteButton"
-        onClick={_ => this.setState({newTopic:""})} id="deleteButton-newTopic">
-        <span className="oi oi-x"> </span>
-      </button></div>;
+      newTopic = <div className="newTopic">Ajouter nouveau : &gt; {this.state.newTopic}
+        <button type="button" className="btn btn-xs ml-3 float-right DeleteButton"
+          onClick={_ => this.setState({newTopic: ''})} id="deleteButton-newTopic">
+          <span className="oi oi-x"> </span>
+        </button></div>;
     }
-    const canValidateTopic=this.state.currentSelection || this.state.newTopic || this.state.topicInputvalue.length > 2;
+    const canValidateTopic = this.state.currentSelection || this.state.newTopic || this.state.topicInputvalue.length > 2;
     return (
       <div>
         <h3 className="h4">{this.state.name}</h3>
         <hr/>
         <div className="Topics">
           {paths}
-          <div className={classes.join(" ")}>
+          <div className={classes.join(' ')}>
             <Autosuggest
               theme={theme}
               className="TopicSuggest"
@@ -636,34 +635,35 @@ class Viewpoint extends Component {
             />
             <div className="input-group-append">
               <button type="button" className="btn btn-sm ValidateButton btn" onClick={() => {
-                  if (this.state.newTopic && (this.state.currentSelection || !this.state.topicInputvalue)) {
-                    var parentId;
-                    if (this.state.currentSelection) parentId=this.state.currentSelection.id
-                    this.createTopic(this.state.newTopic,parentId)
-                      .then(newId => {
-                        this.updatingTopicList(
-                          newId,
-                          this.props.id
-                        )
-                      })
-                      .then(this.clearInput);
-                  } else {
-                    if (this.state.currentSelection) {
+                if (this.state.newTopic && (this.state.currentSelection || !this.state.topicInputvalue)) {
+                  var parentId;
+                  if (this.state.currentSelection) parentId = this.state.currentSelection.id;
+                  this.createTopic(this.state.newTopic, parentId)
+                    .then(newId => {
                       this.updatingTopicList(
-                        this.state.currentSelection.id,
+                        newId,
                         this.props.id
-                      ).then(this.clearInput);
-                    } else {
-                      this.setState({
-                        newTopic:this.state.topicInputvalue,
-                        topicInputvalue:""
-                      });
-                    }
+                      );
+                    })
+                    .then(this.clearInput);
+                } else {
+                  if (this.state.currentSelection) {
+                    this.updatingTopicList(
+                      this.state.currentSelection.id,
+                      this.props.id
+                    ).then(this.clearInput);
+                  } else {
+                    this.setState({
+                      newTopic: this.state.topicInputvalue,
+                      topicInputvalue: ''
+                    });
                   }
-                }}
-                onFocus={this.onTopicInputFocus} onBlur={this.onTopicInputBlur}
-                disabled={!canValidateTopic}
-                id={`validateButton-${this.state.name}`}>
+                }
+              }
+              }
+              onFocus={this.onTopicInputFocus} onBlur={this.onTopicInputBlur}
+              disabled={!canValidateTopic}
+              id={`validateButton-${this.state.name}`}>
                 <span className="oi oi-check"> </span>
               </button>
             </div>
@@ -703,38 +703,40 @@ class Viewpoint extends Component {
     });
   }
 
-  async createTopic(name,parent) {
+  async createTopic(name, parent) {
     var newId;
     let hypertopic = new Hypertopic((await conf).services);
     return hypertopic.get({ _id: this.props.id })
       .then(x => {
-        var topicTree=new TopicTree(x.topics);
-        var newParent=parent || 'root';
-        var newTopic=topicTree.newChildren(newParent);
-        newTopic.name=name;
-        newId=newTopic.id;
+        var topicTree = new TopicTree(x.topics);
+        var newParent = parent || 'root';
+        var newTopic = topicTree.newChildren(newParent);
+        newTopic.name = name;
+        newId = newTopic.id;
         delete newTopic.id;
-        x.topics=topicTree.topics;
+        x.topics = topicTree.topics;
         return x;
       })
       .then(hypertopic.post)
       .then(_ => {
         this.setState(previousState => {
-          let newTopic={
-            id:newId,
-            name:[name]
+          let newTopic = {
+            id: newId,
+            name: [name]
           };
           if (parent) {
-            newTopic.broader=[{
-              id:parent,
-              name:previousState.topics[parent].name
+            newTopic.broader = [{
+              id: parent,
+              name: previousState.topics[parent].name
             }];
           }
-          previousState.topics[newId]=newTopic;
+          previousState.topics[newId] = newTopic;
           return previousState;
-        })
+        });
       })
-      .then(_ => {return newId});
+      .then(_ => {
+        return newId;
+      });
   }
 
 }
@@ -750,7 +752,7 @@ class TopicPath extends Component {
   render() {
     let topics = this._getTopics();
     for (let i = 1; i < topics.length; ++i) {
-      let key="separator-"+i;
+      let key = 'separator-' + i;
       topics.splice(i, 0, <span key={key} className="TopicSeparator">&gt;</span>);
       ++i;
     }
@@ -785,8 +787,8 @@ class TopicPath extends Component {
   }
 
   _getTopics() {
-    return this.state.path.map( t => {
-      let name = (t.name)? t.name : 'Sans nom';
+    return this.state.path.map(t => {
+      let name = (t.name) ? t.name : 'Sans nom';
       let uri = `../../?t={"type":"intersection","data":[{"type":"intersection","selection":["${t.id}"],"exclusion":[]}]}`;
       return (
         <Link title={t.id} key={t.id} className="Topic" to={uri}>{name}</Link>
