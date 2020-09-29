@@ -23,13 +23,7 @@ h1 a, h1 a:hover {
 .Status {
   background-color: rgb(60, 50, 50);
   color: ivory;
-  display: block;
   padding: 4px;
-}
-
-.Authenticated {
-  position: absolute;
-  right: 0;
 }
 
 .Authenticated a {
@@ -38,13 +32,15 @@ h1 a, h1 a:hover {
 }
 
 .Authenticated input:not([type='submit']) {
-  background: dimgrey;
-  color: white;
   border: 0;
   margin: 1px;
 }
 
-.Authenticated input::placeholder {
+.Search input {
+  background: dimgrey;
+}
+
+.Search ::placeholder {
   color: lightgrey;
 }
 
@@ -103,7 +99,7 @@ h1 a, h1 a:hover {
   list-style-type: none;
 }
 
-.Topic a, a.Topic, .ArticleTitle a {
+.Topic a, a.Topic {
   color: black;
 }
 
@@ -150,9 +146,15 @@ h1 a, h1 a:hover {
 .Item {
   margin: 5px;
   color: black;
+  text-align: center;
 }
 
-.Attributes {
+.Item a {
+  text-decoration: none;
+  color: black;
+}
+
+.Attributes > div {
   display: table;
   width: 100%;
 }
@@ -209,7 +211,7 @@ div:hover > .EditButton {
 }
 
 .TopicPath > .Topic:hover, .TopicPath > .Topic:last-of-type:hover,
-.Topics .Topic > a:hover, .ArticleTitle:hover a {
+.Topics .Topic > a:hover {
   opacity: 1;
 }
 
@@ -217,7 +219,7 @@ div:hover > .EditButton {
   padding: 0 5px;
 }
 
-.TopicPath > .Topic:last-of-type, .ArticleTitle a {
+.TopicPath > .Topic:last-of-type {
   opacity: 0.8;
   font-weight: bold;
 }
@@ -381,19 +383,6 @@ ul.Outliner,
 .wrap:hover button{display: inherit;margin-right: 10px;z-index: 999}
 .wrap button{display:none;}
 
-.Article {
-  border-bottom: 1px solid #DDD;
-  color: black;
-  display: block;
-  margin: 1em;
-  text-align: left;
-  width: 100%;
-}
-
-.ArticleTitle {
-  font-weight: bold;
-}
-
 .wrap {
   min-height: 34px;
   display: block;
@@ -423,4 +412,27 @@ ul.Outliner,
 }
 .btn:not(.btn-xs) .oi {
   vertical-align: middle;
+}
+
+.space {
+  border-top: 10px;
+  padding: 0.3rem!important;
+}
+
+.selectAttributes {
+  margin-top: 10px;
+}
+
+#disqus_thread {
+  position: relative;
+}
+
+#disqus_thread:after {
+  content: "";
+  display: block;
+  height: 55px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: #e6ecf0;
 }

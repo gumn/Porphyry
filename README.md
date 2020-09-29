@@ -5,58 +5,46 @@ Contact: <aurelien.benel@utt.fr>
 
 Home page: <https://github.com/Hypertopic/Porphyry>
 
-Notice
-------
 
-Porphyry is a server software. There is no need to install it on your own computer to use it. The usual way is to be "hosted" by one's own institution (ask your system administrator). If your use cases meet our research interests, we can also host your data on our community server.
+## Requirements
 
-Installation requirements
--------------------------
+* [Docker Engine](https://docs.docker.com/install/)
 
-* Git client
-* Node.js
-* [Argos v4](https://github.com/Hypertopic/Argos) (on a server)
 
-The CouchDB instance thats hosts Argos must be set so that:
+## How to use this image
 
-```ini
-[HTTPD]
-enable_cors = true
-secure_rewrites = false
+* With data stored on Argos test server
 
-[CORS]
-origins = http://localhost:3000
-methods = GET, PUT, POST, HEAD, DELETE
-headers = accept, authorization, content-type, origin, referer, if-match
-```
+  ```
+  docker run -p 3000:80 benel/porphyry
+  ```
 
-Create user `alice`.
+  Porphyry is now available at <http://localhost:3000/>
 
-Installation procedure
-----------------------
+* With data stored on your own Argos server
 
-    npm install
+  1. [Install and start Argos server](https://github.com/Hypertopic/Argos/blob/v4/README.md)
+  2. Create the following document in [CouchDB administration interface](http://localhost:5984/_utils/#database/argos/_new) (replace values with what you need):
 
-Launch in development mode
---------------------------
+      ```yaml
+      {
+        "_id": "MY_ITEMS",
+        "corpus_name": "My own items",
+        "users": ["MY_PORTFOLIO"]
+      }
+      ```
 
-    npm start
+  3. Launch Porphyry with appropriate settings:
 
-Build for production
---------------------
+  ```
+  docker run -p 3000:80 -v "$(pwd)"/conf/porphyry.yml:/usr/share/nginx/html/config.yml benel/porphyry
+  ```
 
-    npm run build
+  Porphyry is now available at <http://localhost:3000/>
 
-Tests requirements
-------------------
+* Enable comments
 
-    bundle install
-
-If it fails on macOS because of `libffi`, it can be fixed by brewing and linking an up-to-date version of the library (at your own risk).
-
-Run tests
----------
-
-Once application is launched in development mode:
-
-    npm run test
+  1. [Sign up to Disqus](https://disqus.com/profile/signup/),
+  2. Choose `Install Disqus on my site`,
+  3. Set your Website data and **create site**. Remember its `short name`.
+  4. Edit `conf/porphyry.yml` and paste the short name as the value of `disqus` setting.

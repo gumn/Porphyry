@@ -3,53 +3,103 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@lingui/react": "^2.9.1",
+    "@react-google-maps/api": "^1.9.7",
     "bootstrap": "^4.4.1",
-    "hypertopic": "^3.1.7",
+    "compare-func": "^2.0.0",
+    "disqus-react": "^1.0.7",
+    "hypertopic": "^3.2.0",
     "js-tree": "^2.0.2",
     "json-groupby": "^1.0.2",
+    "mem": "^6.1.0",
+    "memoize-one": "^5.1.1",
     "open-iconic": "^1.1.1",
-    "query-string": "^4.3.4",
-    "react": "^16.12.0",
-    "react-autosuggest": "^9.3.4",
-    "react-dom": "^16.12.0",
-    "react-router-dom": "^4.1.1",
-    "sort-by": "^1.2.0",
-    "yaml": "^1.7.2"
+    "query-string": "^6.11.1",
+    "react": "^16.13.0",
+    "react-autosuggest": "^9.4.3",
+    "react-dom": "^16.13.0",
+    "react-geocode": "^0.2.1",
+    "react-router-dom": "^5.1.2",
+    "yaml": "^1.8.2"
   },
   "devDependencies": {
-    "react-scripts": "^3.3.0",
-    "serve": "^11.3.0"
+    "@lingui/cli": "^2.9.1",
+    "@lingui/macro": "^2.9.1",
+    "react-scripts": "^3.4.1",
+    "serve": "^11.3.2"
   },
   "scripts": {
-    "start": "env EXTEND_ESLINT=true react-scripts start",
-    "build": "react-scripts build",
-    "preprod": "serve -s build -p 3000 &",
-    "test": "cucumber --format summary --retry 1",
+    "add-locale": "lingui add-locale",
+    "extract": "lingui extract",
+    "start": "lingui compile && env EXTEND_ESLINT=true react-scripts start",
+    "clean": "rm -f src/locales/*/messages.js && rm -rf build src/locales/_build",
+    "build": "lingui compile && react-scripts build",
+    "preprod": "serve -s build -p 3000",
+    "test": "cucumber --format summary --retry 2 --fail-fast",
     "eject": "react-scripts eject"
   },
+  "lingui": {
+    "localeDir": "src/locales/",
+    "srcPathDirs": [
+      "src/"
+    ],
+    "format": "po",
+    "sourceLocale": "fr"
+  },
   "eslintConfig": {
-    "extends": ["react-app"],
+    "extends": [
+      "react-app"
+    ],
     "rules": {
+      "object-shorthand": 2,
       "brace-style": 2,
       "jsx-quotes": 2,
-      "quotes": [2, "single"],
+      "quotes": [
+        2,
+        "single"
+      ],
       "keyword-spacing": 2,
       "no-else-return": 2,
       "space-infix-ops": 2,
       "comma-spacing": 2,
       "key-spacing": 2,
-      "semi": [2, "always", {"omitLastInOneLineBlock": true}],
-      "operator-linebreak": [2, "before", {"overrides": {
-        "=": "after"
-      }}],
-      "linebreak-style": 2,
-      "no-multiple-empty-lines": [2, {"max": 1}],
+      "semi": [
+        2,
+        "always",
+        {
+          "omitLastInOneLineBlock": true
+        }
+      ],
+      "operator-linebreak": [
+        2,
+        "before",
+        {
+          "overrides": {
+            "=": "after"
+          }
+        }
+      ],
+      "no-multiple-empty-lines": [
+        2,
+        {
+          "max": 1
+        }
+      ],
       "no-multi-spaces": 2,
       "no-trailing-spaces": 2,
       "no-spaced-func": 2,
       "space-before-blocks": 2,
-      "space-in-parens": [2, "never"],
-      "indent": [2, 2, {"SwitchCase": 1}],
+      "space-in-parens": [
+        2,
+        "never"
+      ],
+      "indent": [
+        2,
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
       "no-mixed-spaces-and-tabs": 2
     }
   },
