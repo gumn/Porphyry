@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import conf from '../../config/config.json';
+import ConnexionContext from './../ConnexionContext/ConnexionContext';
 
 const SESSION_URI = conf.services[0] + '/_session';
+let setAuthSuccess;
 
 class Authenticated extends Component {
 
@@ -16,7 +18,10 @@ class Authenticated extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  static contextType = ConnexionContext
+
   render() {
+    setAuthSuccess = this.context.setAuthSuccess;
     if (this.state.user) {
       return (
         <div className="Authenticated"> {this.state.user}
@@ -75,12 +80,14 @@ class Authenticated extends Component {
     })
       .then(x => {
         if (!x.ok) throw new Error('Bad credentials!');
+        if(x.ok) setAuthSuccess(true);
         this.setState({user})
       })
       .catch(() => this.setState({user: ''}));
   }
 
   _closeSession() {
+    setAuthSuccess(false);
     fetch(SESSION_URI, {method:'DELETE', credentials:'include'})
       .then(() => this.setState({user: ''}));
   }
