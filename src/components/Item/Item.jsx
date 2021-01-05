@@ -7,6 +7,7 @@ import conf from '../../config/config.json';
 import getConfig from '../../config/config.js';
 import Header from '../Header/Header.jsx';
 import Authenticated from '../Authenticated/Authenticated.jsx';
+import ConnexionContext from "./../ConnexionContext/ConnexionContext";
 
 import '../../styles/App.css';
 
@@ -36,7 +37,8 @@ class Item extends Component {
     super();
     this.state = {
       isCreatable: false,
-      topic: []
+      topic: [],
+      authSuccess: false
     };
     // These bindings are necessary to
     //!!make `this` work in the callback
@@ -48,7 +50,13 @@ class Item extends Component {
     this.user=conf.user || window.location.hostname.split('.', 1)[0];
   }
 
+  // Method to update authSuccess
+  setAuthSuccess = (authSuccess) => {
+    this.setState((prevState) => ({ authSuccess }))
+  }
+
   render() {
+    const { setAuthSuccess } = this
     let name = getString(this.state[itemView.name]);
     let lyrics = getString(this.state[itemView.lyrics]);
     let rights = getString(this.state[itemView.rights]);
@@ -62,7 +70,11 @@ class Item extends Component {
     if (rights!=="libre" || lyrics == 'undefined'){
       lyrics_song = 'Pas de paroles disponibles';
     } else {
-      lyrics_song = lyrics;
+      if (this.state.authSuccess) {
+        lyrics_song = lyrics; 
+      } else {
+        lyrics_song = 'Veuillez vous connecter pour accéder aux paroles'; 
+      }
     }
     url= <a target="_blank" href={this.state[itemView.url]} className="cursor-Pointer">{this.state[itemView.url]}
     </a> ;
@@ -70,7 +82,9 @@ class Item extends Component {
       <div className="App container-fluid">
         <Header />
         <div className="Status row h5">
-          <Authenticated/>
+          <ConnexionContext.Provider value={{setAuthSuccess}}>
+            <Authenticated/>
+          </ConnexionContext.Provider>
           <Link to="/" className="badge badge-pill badge-light TopicTag">
             <span className="badge badge-pill badge-dark oi oi-chevron-left"> </span> Retour à l'accueil
           </Link>
