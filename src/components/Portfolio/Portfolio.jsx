@@ -9,6 +9,7 @@ import Corpora from '../Corpora/Corpora.jsx';
 import Header from '../Header/Header.jsx';
 import ViewpointCreator from '../Viewpoint/ViewpointCreator.jsx';
 import Authenticated from '../Authenticated/Authenticated.jsx';
+import ConnexionContext from "./../ConnexionContext/ConnexionContext";
 
 import '../../styles/App.css';
 
@@ -20,13 +21,21 @@ class Portfolio extends Component {
       corpora: [],
       items: [],
       selectedItems: [],
-      topicsItems: new Map()
+      topicsItems: new Map(),
+      authSuccess: false
     };
     this.user = conf.user || window.location.hostname.split('.', 1)[0];
     this._updateSelection();
   }
 
+  // Method to update authSuccess
+  setAuthSuccess = (authSuccess) => {
+    this.setState((prevState) => ({ authSuccess }))
+  }
+
   render() {
+    console.log('auth == ', this.state.authSuccess);
+    const { setAuthSuccess } = this
     let viewpoints = this._getViewpoints();
     let corpora = this._getCorpora();
     let status = this._getStatus();
@@ -34,7 +43,9 @@ class Portfolio extends Component {
       <div className="App container-fluid">
         <Header />
         <div className="Status row h5 text-center">
-          <Authenticated/>
+          <ConnexionContext.Provider value={{setAuthSuccess}}>
+            <Authenticated/>
+          </ConnexionContext.Provider>
           {status}
         </div>
         <div className="container-fluid">
