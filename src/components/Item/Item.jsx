@@ -8,6 +8,7 @@ import getConfig from '../../config/config.js';
 import Header from '../Header/Header.jsx';
 import Authenticated from '../Authenticated/Authenticated.jsx';
 import ConnexionContext from "./../ConnexionContext/ConnexionContext";
+import Auth from './../ConnexionContext/Auth';
 
 import '../../styles/App.css';
 
@@ -56,7 +57,7 @@ class Item extends Component {
   }
 
   render() {
-    let auth = this.props.authSuccess;
+    let isLoggedIn = Auth.isLoggedIn;
     const { setAuthSuccess } = this
     let name = getString(this.state[itemView.name]);
     let lyrics = getString(this.state[itemView.lyrics]);
@@ -71,9 +72,9 @@ class Item extends Component {
     if (rights!=="libre" || lyrics == 'undefined'){
       lyrics_song = 'Pas de paroles disponibles';
     } else {
-      console.log('auth ==' +auth);
+      console.log('isLoggedIn ==' +isLoggedIn);
       console.log('auth ==' +this.state.authSuccess);
-      if (auth || this.state.authSuccess) {
+      if (isLoggedIn || this.state.authSuccess) {
         lyrics_song = lyrics; 
       } else {
         lyrics_song = 'Veuillez vous connecter pour accéder aux paroles'; 

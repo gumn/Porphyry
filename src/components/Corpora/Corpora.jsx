@@ -34,7 +34,7 @@ class Corpora extends Component {
     let auth = this.props.authSuccess;
     return this.props.items.map(item =>
       <Item key={item.name} item={item}
-        id={item.corpus+'/'+item.name} authSuccess={auth} />
+        id={item.corpus+'/'+item.name} />
     );
   }
 
