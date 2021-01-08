@@ -33,7 +33,7 @@ function getString(obj) {
 }
 
 class Item extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       isCreatable: false,
@@ -56,6 +56,7 @@ class Item extends Component {
   }
 
   render() {
+    let auth = this.props.authSuccess;
     const { setAuthSuccess } = this
     let name = getString(this.state[itemView.name]);
     let lyrics = getString(this.state[itemView.lyrics]);
@@ -70,7 +71,9 @@ class Item extends Component {
     if (rights!=="libre" || lyrics == 'undefined'){
       lyrics_song = 'Pas de paroles disponibles';
     } else {
-      if (this.state.authSuccess) {
+      console.log('auth ==' +auth);
+      console.log('auth ==' +this.state.authSuccess);
+      if (auth || this.state.authSuccess) {
         lyrics_song = lyrics; 
       } else {
         lyrics_song = 'Veuillez vous connecter pour accéder aux paroles'; 

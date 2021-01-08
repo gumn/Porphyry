@@ -221,7 +221,8 @@ class Portfolio extends Component {
   _getCorpora() {
     let ids = this.state.corpora.map(c => c.id);
     return (
-      <Corpora ids={ids} from={this.state.items.length} items={this.state.selectedItems} />
+      <Corpora ids={ids} from={this.state.items.length} items={this.state.selectedItems} 
+        authSuccess={this.state.authSuccess} />
     );
   }
 }
