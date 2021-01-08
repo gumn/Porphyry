@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import conf from '../../config/config.json';
 import ConnexionContext from './../ConnexionContext/ConnexionContext';
+import Auth from './../ConnexionContext/Auth';
 
 const SESSION_URI = conf.services[0] + '/_session';
 let setAuthSuccess;
@@ -80,7 +81,7 @@ class Authenticated extends Component {
     })
       .then(x => {
         if (!x.ok) throw new Error('Bad credentials!');
-        if(x.ok) setAuthSuccess(true);
+        if(x.ok) setAuthSuccess(true); Auth.isLoggedIn = true;
         this.setState({user})
       })
       .catch(() => this.setState({user: ''}));
@@ -88,6 +89,7 @@ class Authenticated extends Component {
 
   _closeSession() {
     setAuthSuccess(false);
+    Auth.isLoggedIn = false;
     fetch(SESSION_URI, {method:'DELETE', credentials:'include'})
       .then(() => this.setState({user: ''}));
   }
