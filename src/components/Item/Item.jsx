@@ -59,6 +59,7 @@ class Item extends Component {
   render() {
     let isLoggedIn = Auth.isLoggedIn;
     const { setAuthSuccess } = this
+    const authSuccess = this.state.authSuccess;
     let name = getString(this.state[itemView.name]);
     let lyrics = getString(this.state[itemView.lyrics]);
     let rights = getString(this.state[itemView.rights]);
@@ -74,7 +75,7 @@ class Item extends Component {
     } else {
       console.log('isLoggedIn ==' +isLoggedIn);
       console.log('auth ==' +this.state.authSuccess);
-      if (isLoggedIn || this.state.authSuccess) {
+      if (isLoggedIn || this.state.authSuccess || authSuccess) {
         lyrics_song = lyrics; 
       } else {
         lyrics_song = 'Veuillez vous connecter pour accéder aux paroles'; 
@@ -86,7 +87,7 @@ class Item extends Component {
       <div className="App container-fluid">
         <Header />
         <div className="Status row h5">
-          <ConnexionContext.Provider value={{setAuthSuccess}}>
+          <ConnexionContext.Provider value={{authSuccess, setAuthSuccess}}>
             <Authenticated/>
           </ConnexionContext.Provider>
           <Link to="/" className="badge badge-pill badge-light TopicTag">

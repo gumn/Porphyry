@@ -4,7 +4,7 @@ import ConnexionContext from './../ConnexionContext/ConnexionContext';
 import Auth from './../ConnexionContext/Auth';
 
 const SESSION_URI = conf.services[0] + '/_session';
-let setAuthSuccess;
+let setAuthSuccess, authSuccess;
 
 class Authenticated extends Component {
 
@@ -23,6 +23,7 @@ class Authenticated extends Component {
 
   render() {
     setAuthSuccess = this.context.setAuthSuccess;
+    authSuccess = this.context.authSuccess;
     if (this.state.user) {
       return (
         <div className="Authenticated"> {this.state.user}
@@ -81,7 +82,11 @@ class Authenticated extends Component {
     })
       .then(x => {
         if (!x.ok) throw new Error('Bad credentials!');
-        if(x.ok) setAuthSuccess(true); Auth.isLoggedIn = true;
+        if(x.ok) {
+          setAuthSuccess(true);
+          authSuccess = true;
+          Auth.isLoggedIn = true;
+        }
         this.setState({user})
       })
       .catch(() => this.setState({user: ''}));
@@ -90,6 +95,7 @@ class Authenticated extends Component {
   _closeSession() {
     setAuthSuccess(false);
     Auth.isLoggedIn = false;
+    authSuccess = false;
     fetch(SESSION_URI, {method:'DELETE', credentials:'include'})
       .then(() => this.setState({user: ''}));
   }
