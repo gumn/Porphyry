@@ -70,7 +70,7 @@ class Item extends Component {
     let attributeForm = this.state.isCreatable? this._getAttributeCreationForm() : '';
     let url;
     let lyrics_song;
-    if (rights!=="libre" || lyrics == 'undefined'){
+    if (rights!=="libre" || lyrics === 'undefined'){
       lyrics_song = 'Pas de paroles disponibles';
     } else {
       console.log('isLoggedIn ==' +isLoggedIn);

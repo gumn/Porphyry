@@ -25,6 +25,7 @@ class Authenticated extends Component {
     setAuthSuccess = this.context.setAuthSuccess;
     authSuccess = this.context.authSuccess;
     if (this.state.user) {
+      Auth.isLoggedIn = true;
       return (
         <div className="Authenticated"> {this.state.user}
           <a href="#logout" onClick={this.handleLogout}>Se déconnecter</a>
